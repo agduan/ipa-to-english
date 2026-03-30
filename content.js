@@ -132,6 +132,51 @@ const IPA_LOOKUP = {
   "ˡ": glossPlain("lateral release")
 };
 
+const IPA_SPELLING = {
+  // Affricates
+  t͡ʃ: "ch", t͜ʃ: "ch", tʃ: "ch",
+  d͡ʒ: "j",  d͜ʒ: "j",  dʒ: "j",
+  ts: "ts", dz: "dz",
+
+  // Diphthongs
+  eɪ: "ay", aɪ: "eye", ɔɪ: "oy", aʊ: "ow",
+  əʊ: "oh", oʊ: "oh",
+  ɪə: "eer", ɛə: "air", eə: "air", ʊə: "oor",
+
+  // Vowels + length
+  iː: "ee", ɑː: "ah", ɔː: "aw", uː: "oo", ɜː: "ur",
+  ɝ: "ur", ɚ: "er",
+
+  // Monophthongs
+  i: "ee", ɪ: "ih", e: "eh", ɛ: "eh", æ: "a",
+  ɑ: "ah", ɒ: "o", ʌ: "uh", ɔ: "aw", ʊ: "uu", u: "oo", ə: "uh",
+
+  // Consonants
+  p: "p", b: "b", t: "t", d: "d", k: "k",
+  ɡ: "g", g: "g", f: "f", v: "v",
+  θ: "th", ð: "th", s: "s", z: "z",
+  ʃ: "sh", ʒ: "zh", h: "h",
+  m: "m", n: "n", ŋ: "ng",
+  l: "l", ɫ: "l", ɹ: "r", r: "r",
+  j: "y", w: "w", ʍ: "wh",
+  ɾ: "d", ʔ: "-", ç: "h",
+  x: "kh", χ: "kh", ɦ: "h",
+  ɬ: "ll", ɮ: "ll", β: "v", ʋ: "v",
+
+  // Suprasegmentals — silent or minimal in respelling
+  "ː": "", "ˑ": "", "ˈ": "", "ˌ": "",
+  ".": "-", "|": " ", "‖": " ",
+
+  // Syllabic consonants
+  n̩: "n", l̩: "l", m̩: "m", ŋ̍: "ng", ɹ̩: "ur",
+
+  // Rare vowels
+  ɐ: "uh", ɨ: "ih", ʉ: "oo",
+
+  // Release diacritics — silent
+  "ʰ": "", "ⁿ": "", "ˡ": ""
+};
+
 const SORTED_IPA_KEYS = Object.keys(IPA_LOOKUP).sort(
   (a, b) => b.length - a.length
 );
@@ -179,38 +224,39 @@ function stripDelimiters(text) {
 function tokenizeIpa(raw) {
   const text = stripDelimiters(raw.normalize("NFC"));
   const tokens = [];
+  const spellParts = [];
+  let hasSegments = false;
   let i = 0;
 
   while (i < text.length) {
-    const ch = text[i];
-    if (/\s/.test(ch)) {
-      i += 1;
+    if (/\s/.test(text[i])) {
+      while (i < text.length && /\s/.test(text[i])) i += 1;
+      if (hasSegments && i < text.length) {
+        tokens.push({ type: "gap" });
+        spellParts.push(" ");
+      }
       continue;
     }
 
     let matched = false;
     for (const key of SORTED_IPA_KEYS) {
       if (text.startsWith(key, i)) {
-        tokens.push({ symbol: key, gloss: IPA_LOOKUP[key] });
+        tokens.push({ type: "segment", symbol: key, gloss: IPA_LOOKUP[key] });
+        spellParts.push(IPA_SPELLING[key] ?? "");
         i += key.length;
         matched = true;
+        hasSegments = true;
         break;
       }
     }
 
     if (!matched) {
-      tokens.push({
-        symbol: ch,
-        gloss: glossPlain(
-          "Unknown or non-IPA symbol — may be punctuation, a different language, or a combined character."
-        ),
-        unknown: true
-      });
       i += 1;
     }
   }
 
-  return tokens;
+  const respelling = spellParts.join("").replace(/-{2,}/g, "-").trim();
+  return { tokens, respelling };
 }
 
 let overlayState = null;
@@ -226,7 +272,7 @@ function removeOverlay() {
 function showOverlay(ipaText) {
   removeOverlay();
 
-  const tokens = tokenizeIpa(ipaText);
+  const { tokens, respelling } = tokenizeIpa(ipaText);
 
   const root = document.createElement("div");
   root.id = "ipa-decode-root";
@@ -264,10 +310,25 @@ function showOverlay(ipaText) {
   original.className = "ipa-decode-original";
   original.textContent = ipaText;
 
+  let respellingEl = null;
+  if (respelling) {
+    respellingEl = document.createElement("p");
+    respellingEl.className = "ipa-decode-respelling";
+    respellingEl.textContent = `\u201C${respelling}\u201D`;
+  }
+
   const list = document.createElement("ul");
   list.className = "ipa-decode-list";
 
   for (const t of tokens) {
+    if (t.type === "gap") {
+      const gap = document.createElement("li");
+      gap.className = "ipa-decode-gap";
+      gap.setAttribute("aria-hidden", "true");
+      list.append(gap);
+      continue;
+    }
+
     const row = document.createElement("li");
     row.className = "ipa-decode-row";
 
@@ -277,7 +338,6 @@ function showOverlay(ipaText) {
 
     const desc = document.createElement("span");
     desc.className = "ipa-decode-desc";
-    if (t.unknown) desc.classList.add("ipa-decode-unknown");
     appendGloss(desc, t.gloss);
 
     row.append(sym, desc);
@@ -289,7 +349,9 @@ function showOverlay(ipaText) {
   foot.textContent =
     "Bold letters match Wikipedia-style keyword highlighting; accents differ (British vs American).";
 
-  body.append(origLabel, original, list, foot);
+  body.append(origLabel, original);
+  if (respellingEl) body.append(respellingEl);
+  body.append(list, foot);
   panel.append(header, body);
   root.append(backdrop, panel);
   document.documentElement.appendChild(root);

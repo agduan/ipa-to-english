@@ -26,7 +26,7 @@
   z-index: 2147483647;
   min-width: 280px;
   max-width: min(420px, calc(100vw - 32px));
-  max-height: min(70vh, 560px);
+  max-height: min(78vh, 620px);
   display: flex;
   flex-direction: column;
   border-radius: 14px;
@@ -90,7 +90,7 @@
 }
 
 .ipa-decode-body {
-  padding: 12px 14px 14px;
+  padding: 10px 12px 12px;
   overflow-y: auto;
   flex: 1;
 }
@@ -101,20 +101,29 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: rgba(15, 23, 42, 0.48);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .ipa-decode-original {
-  margin: 0 0 14px;
-  padding: 10px 12px;
-  border-radius: 10px;
+  margin: 0 0 4px;
+  padding: 6px 8px;
+  border-radius: 8px;
   background: rgba(241, 245, 249, 0.95);
   border: 1px solid rgba(15, 23, 42, 0.08);
   font-family: "Noto Sans IPA", "Charis SIL", "Doulos SIL", "DejaVu Sans", "Segoe UI", sans-serif;
-  font-size: 18px;
-  line-height: 1.5;
+  font-size: 17px;
+  line-height: 1.28;
   word-break: break-word;
   color: #0f172a;
+}
+
+.ipa-decode-respelling {
+  margin: 0 0 10px;
+  padding: 0 2px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgba(15, 23, 42, 0.58);
+  font-style: italic;
 }
 
 .ipa-decode-list {
@@ -123,30 +132,39 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 3px;
+}
+
+.ipa-decode-gap {
+  height: 6px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  margin-bottom: 2px;
 }
 
 .ipa-decode-row {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 10px 14px;
+  gap: 6px 10px;
   align-items: baseline;
-  padding: 8px 10px;
-  border-radius: 10px;
+  padding: 4px 6px;
+  border-radius: 8px;
   background: rgba(248, 250, 252, 0.9);
   border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .ipa-decode-symbol {
   font-family: "Noto Sans IPA", "Charis SIL", "Doulos SIL", "DejaVu Sans", "Segoe UI", sans-serif;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
   color: #1d4ed8;
-  min-width: 2ch;
+  min-width: 1.25ch;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
 }
 
 .ipa-decode-desc {
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.35;
   color: rgba(15, 23, 42, 0.88);
 }
 
@@ -156,11 +174,7 @@
 }
 
 .ipa-decode-footnote {
-  margin-top: 12px;
+  margin-top: 8px;
   font-size: 11px;
   color: rgba(15, 23, 42, 0.5);
-}
-
-.ipa-decode-unknown {
-  color: #b45309;
 }
