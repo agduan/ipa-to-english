@@ -3,6 +3,21 @@
   "name": "IPA to English (Wikipedia)",
   "version": "1.0.0",
   "description": "Decode highlighted IPA using Help:IPA/English-style approximations.",
+  "icons": {
+    "16": "ipa.png",
+    "32": "ipa.png",
+    "48": "ipa.png",
+    "128": "ipa.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "ipa.png",
+      "32": "ipa.png",
+      "48": "ipa.png",
+      "128": "ipa.png"
+    },
+    "default_title": "IPA to English (Wikipedia)"
+  },
   "permissions": ["contextMenus", "activeTab"],
   "background": {
     "service_worker": "background.js"
