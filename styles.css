@@ -1,0 +1,159 @@
+#ipa-decode-root {
+  all: initial;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #e8eaed;
+  box-sizing: border-box;
+}
+
+#ipa-decode-root *,
+#ipa-decode-root *::before,
+#ipa-decode-root *::after {
+  box-sizing: border-box;
+}
+
+.ipa-decode-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  background: rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.ipa-decode-panel {
+  position: fixed;
+  z-index: 2147483647;
+  min-width: 280px;
+  max-width: min(420px, calc(100vw - 32px));
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  background: rgba(28, 32, 40, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0, 0, 0, 0.2) inset;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.ipa-decode-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ipa-decode-header:active {
+  cursor: grabbing;
+}
+
+.ipa-decode-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #f1f3f4;
+}
+
+.ipa-decode-close {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #1a1d24;
+  background: linear-gradient(180deg, #f0f3f8, #d5dae3);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+
+.ipa-decode-close:hover {
+  filter: brightness(1.06);
+}
+
+.ipa-decode-close:active {
+  transform: translateY(1px);
+}
+
+.ipa-decode-body {
+  padding: 12px 14px 14px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.ipa-decode-original-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(232, 234, 237, 0.55);
+  margin-bottom: 6px;
+}
+
+.ipa-decode-original {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: "Noto Sans IPA", "Charis SIL", "Doulos SIL", "DejaVu Sans", "Segoe UI", sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  word-break: break-word;
+  color: #fdfdfd;
+}
+
+.ipa-decode-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ipa-decode-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 14px;
+  align-items: baseline;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ipa-decode-symbol {
+  font-family: "Noto Sans IPA", "Charis SIL", "Doulos SIL", "DejaVu Sans", "Segoe UI", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #a8c7ff;
+  min-width: 2ch;
+}
+
+.ipa-decode-desc {
+  font-size: 13px;
+  color: rgba(232, 234, 237, 0.9);
+}
+
+.ipa-decode-footnote {
+  margin-top: 12px;
+  font-size: 11px;
+  color: rgba(232, 234, 237, 0.45);
+}
+
+.ipa-decode-unknown {
+  color: #ffb4a9;
+}
