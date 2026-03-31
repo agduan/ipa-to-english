@@ -1,4 +1,4 @@
-Chrome extension to view IPA symbols in English.
+Right-click to view IPA symbols in English. \\
 Install at `chrome://extensions` → Developer mode → Load unpacked
 
 | Popup | In use |
